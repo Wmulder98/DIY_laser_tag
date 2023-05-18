@@ -7,6 +7,7 @@
 //Proccesor datasheet:
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include <IRremote.h> // include the IRremote library
 #include "global.h"
 
 //Topic varables for use in other code 
@@ -14,6 +15,9 @@ char topicGeneral[30];
 
 WiFiClient espClient;
 PubSubClient client(espClient);
+
+IRrecv receiver(RECEIVER_PIN); // create a receiver object of the IRrecv class
+decode_results results; // create a results object of the decode_results class
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,6 +29,8 @@ void setup() {
   client.subscribe(newPlayer);
   client.subscribe(gameTime);
   client.subscribe(gameStarted);
+
+  setupIRreceive();
 }
 
 void callback(char *topic, byte *payload, unsigned int length) {
@@ -55,6 +61,9 @@ void callback(char *topic, byte *payload, unsigned int length) {
 void loop() {
   // put your main code here, to run repeatedly:
   client.loop();
-  
+  if (receiver.decode(&results)) { // decode the received signal and store it in results
+    Serial.println(results.value, HEX); // print the values in the Serial Monitor
+    receiver.resume(); // reset the receiver for the next code
+  }
 
 }

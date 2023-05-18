@@ -14,3 +14,5 @@
 #define newPlayer   "general/newPlayer"
 #define gameTime    "general/gameTime"
 #define gameStarted "general/gameStarted"
+
+#define RECEIVER_PIN 5 // define the IR receiver pin D1 on node MCU
