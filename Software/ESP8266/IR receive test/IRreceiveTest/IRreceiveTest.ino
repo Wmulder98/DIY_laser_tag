@@ -16,8 +16,12 @@ void setup() {
 
 void loop() {
   if (receiver.decode(&results)) { // decode the received signal and store it in results
-    Serial.println(results.value, HEX); // print the values in the Serial Monitor
     
+    if (results.value != 0xFFFFFFFF){
+      Serial.println(results.value, HEX); // print the values in the Serial Monitor
+    
+      
+    }
     receiver.resume(); // reset the receiver for the next code
   }
 }
